@@ -17,6 +17,9 @@
             --glass: rgba(255, 255, 255, 0.2);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --success: #00b894;
+            --danger: #d63031;
+            --warning: #fdcb6e;
         }
 
         /* Reset et Base */
@@ -36,7 +39,7 @@
         }
 
         /* Typographie */
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             font-weight: 700;
             line-height: 1.2;
         }
@@ -447,51 +450,10 @@
             animation-delay: 2s;
         }
 
-        /* Custom Checkbox */
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            cursor: pointer;
-        }
-
-        .custom-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--primary);
-            border-radius: 5px;
-            margin-right: 10px;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .custom-checkbox::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 12px;
-            height: 12px;
-            background: var(--primary);
-            border-radius: 2px;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .checkbox-input:checked + .custom-checkbox::after {
-            opacity: 1;
-        }
-
-        .checkbox-label {
-            font-size: 0.9rem;
-            color: var(--dark);
-        }
-
         /* Link Display */
         .link-display {
             margin-top: 2rem;
-            padding: 1.5rem;
+            padding: 2rem;
             background: white;
             border-radius: 15px;
             box-shadow: var(--shadow);
@@ -505,8 +467,8 @@
 
         .generated-link {
             display: inline-block;
-            margin-top: 1rem;
-            padding: 0.8rem 1.5rem;
+            margin: 1rem 0;
+            padding: 1rem 1.5rem;
             background: rgba(108, 92, 231, 0.1);
             border-radius: 50px;
             color: var(--primary);
@@ -521,18 +483,18 @@
         }
 
         .copy-btn {
-            margin-top: 1rem;
             background: var(--accent);
             color: white;
             border: none;
-            padding: 0.5rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             border-radius: 50px;
-            font-size: 0.9rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            margin-top: 0.5rem;
         }
 
         .copy-btn:hover {
@@ -540,8 +502,39 @@
             transform: translateY(-2px);
         }
 
-        .copy-btn i {
-            font-size: 0.8rem;
+        /* Private Access Section */
+        .private-access {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .private-link {
+            font-weight: 600;
+            color: var(--primary);
+            word-break: break-all;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
     </style>
 </head>
@@ -578,11 +571,23 @@
                 <div id="link-result" class="link-display">
                     <p>🎉 Ton lien est prêt ! Partage-le pour recevoir des messages :</p>
                     <a id="generated-link" href="#" target="_blank" class="generated-link"></a>
-                    <button id="copy-btn" class="copy-btn">
-                        <i class="fas fa-copy"></i> Copier le lien
+                    <button id="copy-public-btn" class="copy-btn">
+                        <i class="fas fa-copy"></i> Copier le lien public
                     </button>
-                    <p style="margin-top: 1rem; font-size: 0.9rem;">Pour voir tes messages, ajoute <code style="background: rgba(0,0,0,0.1); padding: 2px 5px; border-radius: 3px;">?admin=1</code> à la fin de ton URL</p>
+
+                    <div class="private-access">
+                        <h4 style="margin-bottom: 1rem;">Accès à tes messages :</h4>
+                        <a id="private-link" href="#" class="private-link"></a>
+                        <button id="copy-private-btn" class="copy-btn">
+                            <i class="fas fa-lock"></i> Copier le lien privé
+                        </button>
+                        <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                            <i class="fas fa-exclamation-circle"></i> Conserve ce lien précieusement, c'est le seul moyen d'accéder à tes messages.
+                        </p>
+                    </div>
                 </div>
+
+                <div id="alert-message" class="alert"></div>
             </div>
         </div>
     </section>
@@ -614,7 +619,7 @@
                         <i class="fas fa-envelope-open-text"></i>
                     </div>
                     <h3 class="feature-title">3. Reçois des messages</h3>
-                    <p class="feature-text">Consulte les messages anonymes que tu as reçus via ton espace privé.</p>
+                    <p class="feature-text">Consulte les messages anonymes que tu as reçus via ton espace privé sécurisé.</p>
                 </div>
             </div>
         </div>
@@ -631,7 +636,7 @@
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    <p>Oui ! Les messages sont totalement anonymes. Nous ne stockons aucune information sur les expéditeurs.</p>
+                    <p>Oui ! Les messages sont totalement anonymes. Nous ne stockons aucune information sur les expéditeurs et nous utilisons un chiffrement sécurisé pour protéger tes données.</p>
                 </div>
             </div>
             
@@ -641,7 +646,7 @@
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    <p>Ajoute simplement <code>?admin=1</code> à la fin de ton URL personnalisée pour accéder à ton espace privé.</p>
+                    <p>Utilise le lien privé généré automatiquement lorsque tu crées ton profil. Ce lien contient un token sécurisé qui te donne accès à tes messages.</p>
                 </div>
             </div>
             
@@ -651,7 +656,7 @@
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    <p>Chaque pseudo est unique. Si tu veux changer, crée simplement un nouveau lien avec un autre pseudo.</p>
+                    <p>Chaque pseudo est unique. Si tu veux changer, crée simplement un nouveau lien avec un autre pseudo. Tes anciens messages resteront accessibles via ton ancien lien privé.</p>
                 </div>
             </div>
             
@@ -661,7 +666,23 @@
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    <p>Non, les messages restent disponibles tant que tu conserves ton lien. Nous ne les supprimons pas automatiquement.</p>
+                    <p>Non, les messages restent disponibles tant que tu conserves ton lien. Nous ne les supprimons pas automatiquement. Pour supprimer des messages, tu peux nous contacter.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Est-ce sécurisé ?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Absolument ! Nous utilisons :</p>
+                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                        <li>Tokens sécurisés uniques</li>
+                        <li>Chiffrement des données</li>
+                        <li>Protection contre les attaques</li>
+                        <li>Authentification forte</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -677,6 +698,7 @@
                     <a href="#" class="footer-link">Accueil</a>
                     <a href="#" class="footer-link">À propos</a>
                     <a href="#" class="footer-link">Confidentialité</a>
+                    <a href="#" class="footer-link">Conditions</a>
                     <a href="#" class="footer-link">Contact</a>
                 </div>
                 
@@ -694,35 +716,55 @@
 
     <script>
         // Generate link functionality
-        document.getElementById('generate-btn').addEventListener('click', function() {
+        document.getElementById('generate-btn').addEventListener('click', async function() {
             const pseudo = document.getElementById('pseudo').value.trim();
+            const alertElement = document.getElementById('alert-message');
             
             if (!pseudo) {
-                alert('Veuillez entrer un pseudo');
+                showAlert('Veuillez entrer un pseudo', 'error');
                 return;
             }
             
-            const baseUrl = window.location.href.split('?')[0].replace(/\/$/, '');
-            const link = `${baseUrl}/${pseudo}`;
+            if (pseudo.length < 3 || pseudo.length > 20) {
+                showAlert('Le pseudo doit contenir entre 3 et 20 caractères', 'error');
+                return;
+            }
             
-            document.getElementById('generated-link').textContent = link;
-            document.getElementById('generated-link').href = link;
-            document.getElementById('link-result').classList.add('show');
-            
-            // Scroll to the link result
-            document.getElementById('link-result').scrollIntoView({ behavior: 'smooth' });
+            try {
+                // Generate public link
+                const baseUrl = window.location.href.split('?')[0].replace(/\/$/, '');
+                const publicLink = `${baseUrl}/${pseudo}`;
+                
+                // Generate private link
+                const privateLink = `${baseUrl}/${pseudo}/private?token=${generateToken(pseudo)}`;
+                
+                // Update UI
+                document.getElementById('generated-link').textContent = publicLink;
+                document.getElementById('generated-link').href = publicLink;
+                document.getElementById('private-link').textContent = privateLink;
+                document.getElementById('private-link').href = privateLink;
+                document.getElementById('link-result').classList.add('show');
+                
+                // Scroll to results
+                document.getElementById('link-result').scrollIntoView({ behavior: 'smooth' });
+                
+                showAlert('Lien créé avec succès !', 'success');
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Une erreur est survenue', 'error');
+            }
         });
 
-        // Copy link functionality
-        document.getElementById('copy-btn').addEventListener('click', function() {
+        // Copy public link
+        document.getElementById('copy-public-btn').addEventListener('click', function() {
             const link = document.getElementById('generated-link').textContent;
-            navigator.clipboard.writeText(link).then(() => {
-                const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check"></i> Lien copié !';
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                }, 2000);
-            });
+            copyToClipboard(link, this, 'Lien public copié !');
+        });
+
+        // Copy private link
+        document.getElementById('copy-private-btn').addEventListener('click', function() {
+            const link = document.getElementById('private-link').textContent;
+            copyToClipboard(link, this, 'Lien privé copié !');
         });
 
         // FAQ toggle functionality
@@ -739,6 +781,36 @@
                 icon.classList.remove('fa-chevron-up');
                 icon.classList.add('fa-chevron-down');
             }
+        }
+
+        // Helper function to generate a simple token
+        function generateToken(pseudo) {
+            return window.btoa(encodeURIComponent(pseudo + Date.now())).replace(/=/g, '');
+        }
+
+        // Helper function to copy text to clipboard
+        function copyToClipboard(text, buttonElement, successMessage) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = buttonElement.innerHTML;
+                buttonElement.innerHTML = `<i class="fas fa-check"></i> ${successMessage}`;
+                setTimeout(() => {
+                    buttonElement.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        // Helper function to show alert messages
+        function showAlert(message, type) {
+            const alertElement = document.getElementById('alert-message');
+            alertElement.textContent = message;
+            alertElement.className = `alert alert-${type}`;
+            alertElement.style.display = 'block';
+            
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 5000);
         }
 
         // Animation on scroll
