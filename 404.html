@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page non trouvée - Waz-Moi</title>
+    <style>
+        :root {
+            --primary: #009B3A; /* Vert Gabon */
+            --secondary: #FCD116; /* Jaune Gabon */
+            --accent: #CE1126; /* Rouge Gabon */
+            --dark: #343a40;
+            --light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .error-container {
+            max-width: 600px;
+            padding: 2rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .error-code {
+            font-size: 5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+
+        .error-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .error-message {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #6c757d;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #007a2f;
+            transform: translateY(-2px);
+        }
+
+        .error-image {
+            max-width: 300px;
+            margin: 2rem auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Animation spécifique pour la page 404 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 3rem;
+            }
+            
+            .error-title {
+                font-size: 1.5rem;
+            }
+            
+            .error-message {
+                font-size: 1rem;
+            }
+            
+            .error-image {
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <h1 class="error-title">Profil non trouvé</h1>
+        <p class="error-message">
+            Désolé, le profil que vous cherchez n'existe pas ou a été supprimé.
+        </p>
+        <div class="error-image floating">
+            <svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                <rect x="50" y="50" width="200" height="100" rx="10" fill="#f8f9fa" stroke="#009B3A" stroke-width="2"/>
+                <circle cx="100" cy="100" r="20" fill="#CE1126"/>
+                <path d="M150,80 L250,80 L250,120 L150,120 Z" fill="#FCD116"/>
+                <text x="150" y="160" font-family="Arial" font-size="16" text-anchor="middle" fill="#6c757d">Waz-Moi</text>
+            </svg>
+        </div>
+        <a href="/" class="btn">Retour à l'accueil</a>
+    </div>
+</body>
+</html>
