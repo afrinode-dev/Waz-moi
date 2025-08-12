@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 const cors = require('cors');
 const session = require('express-session');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,6 +34,8 @@ db.serialize(() => {
         avatar_color TEXT DEFAULT '#009B3A',
         is_admin BOOLEAN DEFAULT 0,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        ALTER TABLE users ADD COLUMN reset_token TEXT;
+ALTER TABLE users ADD COLUMN reset_expires INTEGER;
     )`);
 
     db.run(`CREATE TABLE IF NOT EXISTS messages (
@@ -63,6 +66,15 @@ db.serialize(() => {
                    ['admin', 'admin@wazmoi.com', adminPass]);
         }
     });
+});
+
+// Configurez le transporteur SMTP (exemple avec Gmail)
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
 });
 
 // Fonctions utilitaires
@@ -97,6 +109,60 @@ app.get('/admin/data', isAdmin, (req, res) => {
             });
         });
     });
+});
+
+
+// Ajoutez cette nouvelle route avant les routes existantes
+app.post('/api/forgot-password', async (req, res) => {
+    const { email } = req.body;
+    
+    try {
+        // 1. Vérifiez si l'email existe
+        const user = await new Promise((resolve, reject) => {
+            db.get("SELECT * FROM users WHERE email = ?", [email], (err, row) => {
+                if (err) reject(err);
+                resolve(row);
+            });
+        });
+
+        if (!user) {
+            return res.status(404).json({ error: "Aucun compte associé à cet email" });
+        }
+
+        // 2. Générez un token de réinitialisation (exemple simplifié)
+        const resetToken = require('crypto').randomBytes(20).toString('hex');
+        const resetExpires = Date.now() + 3600000; // 1 heure
+
+        // 3. Stockez le token dans la base (vous devrez ajouter ces champs à votre table users)
+        await new Promise((resolve, reject) => {
+            db.run(
+                "UPDATE users SET reset_token = ?, reset_expires = ? WHERE id = ?",
+                [resetToken, resetExpires, user.id],
+                (err) => err ? reject(err) : resolve()
+            );
+        });
+
+        // 4. Envoyez l'email
+        const resetUrl = `https://waz-moi-jet.vercel.app/reset-password?token=${resetToken}`;
+        
+        const mailOptions = {
+            to: email,
+            subject: 'Réinitialisation de votre mot de passe Waz-Moi',
+            html: `
+                <p>Vous avez demandé à réinitialiser votre mot de passe.</p>
+                <p>Cliquez sur ce lien pour continuer :</p>
+                <a href="${resetUrl}">${resetUrl}</a>
+                <p>Ce lien expirera dans 1 heure.</p>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+        
+        res.json({ success: true });
+    } catch (err) {
+        console.error("Erreur forgot-password:", err);
+        res.status(500).json({ error: "Erreur lors de l'envoi de l'email" });
+    }
 });
 
 // Routes publiques
