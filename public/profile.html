@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Waz-Moi</title>
+    <style>
+        :root {
+            --primary: #009B3A; /* Vert Gabon */
+            --secondary: #FCD116; /* Jaune Gabon */
+            --accent: #CE1126; /* Rouge Gabon */
+            --dark: #343a40;
+            --light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .profile-link {
+            color: #6c757d;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .profile-bio {
+            margin: 1.5rem 0;
+            line-height: 1.6;
+        }
+
+        .profile-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            color: #6c757d;
+        }
+
+        .message-form {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            animation: slideUp 0.5s ease;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            min-height: 120px;
+            resize: vertical;
+            font-size: 1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .checkbox-group input {
+            margin-right: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #007a2f;
+            transform: translateY(-2px);
+        }
+
+        .messages-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .message {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .message:last-child {
+            border-bottom: none;
+        }
+
+        .message-content {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .anonymous-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+
+        .no-messages {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Style spécifique pour la page de profil */
+        .profile-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .login-prompt {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-prompt a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+            
+            .profile-name {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-avatar" id="profile-avatar">?</div>
+            <h1 class="profile-name" id="profile-name">Chargement...</h1>
+            <span class="profile-link" id="profile-link">waz-moi.com/@profil</span>
+            <div class="profile-bio" id="profile-bio"></div>
+            <div class="profile-meta">
+                <span id="profile-location"></span>
+                <a href="#" id="profile-website" target="_blank"></a>
+            </div>
+        </div>
+
+        <div id="message-form-container" class="message-form">
+            <h2>Envoyer un message</h2>
+            <form id="message-form">
+                <div class="form-group">
+                    <label for="message-content">Votre message</label>
+                    <textarea id="message-content" placeholder="Écrivez votre message ici..." required></textarea>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="is-anonymous" checked>
+                    <label for="is-anonymous">Envoyer anonymement</label>
+                </div>
+                <button type="submit" class="btn">Envoyer le message</button>
+            </form>
+        </div>
+
+        <div id="login-prompt" class="login-prompt" style="display: none;">
+            <p>Connectez-vous pour envoyer un message à ce profil.</p>
+            <p><a href="/login">Se connecter</a> ou <a href="/register">Créer un compte</a></p>
+        </div>
+
+        <div class="messages-container">
+            <h2>Messages reçus</h2>
+            <div id="messages-list">
+                <div class="no-messages">Chargement des messages...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Récupérer le lien du profil depuis l'URL
+        const profileLink = window.location.pathname.split('@')[1];
+        
+        // Éléments du DOM
+        const profileAvatar = document.getElementById('profile-avatar');
+        const profileName = document.getElementById('profile-name');
+        const profileLinkElement = document.getElementById('profile-link');
+        const profileBio = document.getElementById('profile-bio');
+        const profileLocation = document.getElementById('profile-location');
+        const profileWebsite = document.getElementById('profile-website');
+        const messageFormContainer = document.getElementById('message-form-container');
+        const loginPrompt = document.getElementById('login-prompt');
+        const messageForm = document.getElementById('message-form');
+        const messagesList = document.getElementById('messages-list');
+
+        // Vérifier si l'utilisateur est connecté
+        const isLoggedIn = localStorage.getItem('waz-moi-loggedIn') === 'true';
+        const currentUser = isLoggedIn ? localStorage.getItem('waz-moi-username') : null;
+
+        // Afficher le formulaire ou l'invite de connexion
+        if (isLoggedIn) {
+            messageFormContainer.style.display = 'block';
+            loginPrompt.style.display = 'none';
+        } else {
+            messageFormContainer.style.display = 'none';
+            loginPrompt.style.display = 'block';
+        }
+
+        // Charger les infos du profil
+        function loadProfile() {
+            fetch(`/api/profile/${profileLink}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const profile = data.profile;
+                        
+                        // Mettre à jour les infos du profil
+                        profileName.textContent = profile.fullName || profile.username;
+                        profileLinkElement.textContent = `waz-moi.com/@${profileLink}`;
+                        
+                        // Avatar
+                        profileAvatar.textContent = (profile.fullName || profile.username).charAt(0).toUpperCase();
+                        profileAvatar.style.backgroundColor = profile.avatarColor;
+                        
+                        // Bio
+                        if (profile.bio) {
+                            profileBio.textContent = profile.bio;
+                        } else {
+                            profileBio.style.display = 'none';
+                        }
+                        
+                        // Localisation
+                        if (profile.location) {
+                            profileLocation.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${profile.location}`;
+                        } else {
+                            profileLocation.style.display = 'none';
+                        }
+                        
+                        // Site web
+                        if (profile.website) {
+                            profileWebsite.href = profile.website.startsWith('http') ? 
+                                profile.website : `https://${profile.website}`;
+                            profileWebsite.textContent = profile.website.replace(/^https?:\/\//, '');
+                        } else {
+                            profileWebsite.style.display = 'none';
+                        }
+                    } else {
+                        window.location.href = '/404.html';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    window.location.href = '/404.html';
+                });
+        }
+
+        // Charger les messages
+        function loadMessages() {
+            fetch(`/api/messages/${profileLink}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.messages && data.messages.length > 0) {
+                        messagesList.innerHTML = '';
+                        
+                        data.messages.forEach(msg => {
+                            const messageElement = document.createElement('div');
+                            messageElement.className = 'message';
+                            
+                            let metaContent = '';
+                            if (msg.isAnonymous) {
+                                metaContent = `<span class="anonymous-badge">Anonyme</span>`;
+                            } else if (msg.sender) {
+                                metaContent = `De: <span style="color: ${msg.sender.avatarColor}">${msg.sender.username}</span>`;
+                            }
+                            
+                            messageElement.innerHTML = `
+                                <div class="message-content">${msg.content}</div>
+                                <div class="message-meta">
+                                    ${metaContent}
+                                    <span>${msg.date}</span>
+                                </div>
+                            `;
+                            
+                            messagesList.appendChild(messageElement);
+                        });
+                    } else {
+                        messagesList.innerHTML = '<div class="no-messages">Aucun message pour le moment</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    messagesList.innerHTML = '<div class="no-messages">Erreur de chargement des messages</div>';
+                });
+        }
+
+        // Envoyer un message
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const content = document.getElementById('message-content').value;
+            const isAnonymous = document.getElementById('is-anonymous').checked;
+            
+            if (!content.trim()) {
+                alert('Veuillez écrire un message');
+                return;
+            }
+            
+            fetch('/api/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    receiverLink: profileLink,
+                    content: content,
+                    isAnonymous: isAnonymous,
+                    senderUsername: currentUser
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Message envoyé avec succès!');
+                    document.getElementById('message-content').value = '';
+                    loadMessages();
+                } else {
+                    alert('Erreur: ' + (data.error || 'Impossible d\'envoyer le message'));
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue lors de l\'envoi du message');
+            });
+        });
+
+        // Charger les données au démarrage
+        loadProfile();
+        loadMessages();
+
+        // Ajouter Font Awesome pour les icônes
+        const faScript = document.createElement('script');
+        faScript.src = 'https://kit.fontawesome.com/a076d05399.js';
+        document.head.appendChild(faScript);
+    </script>
+</body>
+</html>

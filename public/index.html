@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waz-Moi | Réseau Social Gabonais</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --gabon-green: #009B3A;
+            --gabon-yellow: #FCD116;
+            --gabon-blue: #6C5CE7;
+            --gabon-red: #CE1126;
+            --dark: #343a40;
+            --light: #f8f9fa;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Animations du drapeau Gabon */
+        @keyframes flagWave {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-5px) rotate(2deg); }
+            50% { transform: translateY(5px) rotate(-2deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes colorShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(0, 155, 58, 0.9);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo .flag-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 10rem 0 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(-45deg, #f5f7fa, #e4e8f0, #f5f7fa, #e4e8f0);
+            background-size: 400% 400%;
+            animation: colorShift 15s ease infinite;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="%23009B3A" fill-opacity="0.05" d="M0,0 L100,0 L100,100 Q50,80 0,100 Z"></path></svg>');
+            background-size: 100% 100%;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--gabon-green);
+            animation: slideIn 1s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--dark);
+            animation: slideIn 1s 0.2s ease both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            animation: slideIn 1s 0.4s ease both;
+        }
+
+        .hero-animation {
+            max-width: 600px;
+            margin: 2rem auto;
+            animation: pulse 4s infinite, slideUp 1s 0.6s ease both;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background-color: var(--gabon-green);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 155, 58, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: #007a2f;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 155, 58, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: var(--gabon-yellow);
+            color: var(--dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e6b800;
+            transform: translateY(-3px);
+        }
+
+        .btn-accent {
+            background-color: var(--gabon-blue);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background-color: #5a4bc7;
+            transform: translateY(-3px);
+        }
+
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-ripple:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+
+        .btn-ripple:active:after {
+            transform: scale(0, 0);
+            opacity: 0.3;
+            transition: 0s;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.2rem;
+            color: var(--gabon-green);
+            position: relative;
+            animation: fadeIn 1s ease;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--gabon-blue);
+            margin: 0.5rem auto;
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 1s ease;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.2s; }
+        .feature-card:nth-child(2) { animation-delay: 0.4s; }
+        .feature-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--gabon-green);
+            margin-bottom: 1rem;
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--gabon-green);
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 5rem 0;
+            background-color: #f8f9fa;
+        }
+
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
+            animation: slideUp 1s ease;
+        }
+
+        .step:nth-child(1) { animation-delay: 0.2s; }
+        .step:nth-child(2) { animation-delay: 0.4s; }
+        .step:nth-child(3) { animation-delay: 0.6s; }
+
+        .step:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background-color: var(--gabon-green);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+            box-shadow: 0 4px 8px rgba(0, 155, 58, 0.3);
+            transition: var(--transition);
+        }
+
+        .step:hover .step-number {
+            transform: scale(1.1);
+            background-color: var(--gabon-blue);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 0;
+            background-color: white;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--light);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            animation: slideUp 1s ease;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--gabon-green);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--gabon-green);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 155, 58, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--gabon-blue);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--gabon-blue);
+            transform: translateY(-3px) rotate(10deg);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: slideUp 0.5s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #adb5bd;
+            transition: var(--transition);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-modal:hover {
+            color: var(--gabon-red);
+            background-color: rgba(206, 17, 38, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--gabon-green);
+        }
+
+        /* Auth Tabs */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .auth-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #adb5bd;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+            position: relative;
+        }
+
+        .auth-tab.active {
+            color: var(--gabon-green);
+            border-bottom-color: var(--gabon-green);
+        }
+
+        .auth-tab:hover:not(.active) {
+            color: var(--dark);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .forgot-password a {
+            color: var(--gabon-green);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-password a:hover {
+            color: var(--gabon-blue);
+            text-decoration: underline;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            padding: 6rem 0 2rem;
+            min-height: 100vh;
+            background-color: #f5f7fa;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            animation: slideIn 0.5s ease;
+        }
+
+        .dashboard-title {
+            font-size: 1.8rem;
+            color: var(--gabon-green);
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 992px) {
+            .dashboard-content {
+                grid-template-columns: 1fr 2fr;
+            }
+        }
+
+        .dashboard-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            animation: slideUp 0.5s ease;
+        }
+
+        .dashboard-card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-card {
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background-color: var(--gabon-green);
+            z-index: 0;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--gabon-yellow);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-name {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-link {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: var(--light);
+            border-radius: 5px;
+            word-break: break-all;
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .profile-link:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .copy-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .messages-list {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .messages-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .messages-list::-webkit-scrollbar-thumb {
+            background: var(--gabon-green);
+            border-radius: 10px;
+        }
+
+        .messages-list::-webkit-scrollbar-thumb:hover {
+            background: #007a2f;
+        }
+
+        .message {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            transition: var(--transition);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .message:hover {
+            background-color: #f9f9f9;
+            transform: translateX(5px);
+        }
+
+        .message-date {
+            font-size: 0.8rem;
+            color: #adb5bd;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-content {
+            white-space: pre-wrap;
+        }
+
+        .no-messages {
+            text-align: center;
+            padding: 2rem;
+            color: #adb5bd;
+        }
+
+        /* Flag Animation Background */
+        .flag-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .flag-particle {
+            position: absolute;
+            width: 30px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: flagWave 3s infinite ease-in-out;
+            opacity: 0.7;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .dashboard-title {
+                font-size: 1.5rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .steps {
+                flex-direction: column;
+            }
+            
+            .step {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .feature-card {
+                padding: 1.5rem;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flag Animation Background -->
+    <div class="flag-bg" id="flagBackground"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <span class="flag-icon">🇬🇦</span>
+                <span>Waz-Moi</span>
+            </div>
+            <div class="auth-buttons">
+                <button id="login-btn" class="btn btn-outline btn-ripple">Connexion</button>
+                <button id="register-btn" class="btn btn-primary btn-ripple">Inscription</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-content">
+                <h1>Réseau Social Gabonais</h1>
+                <p>Connectez-vous, partagez et recevez des messages anonymes en toute simplicité avec Waz-Moi.</p>
+                <div class="hero-buttons">
+                    <a href="#how-it-works" class="btn btn-secondary btn-ripple">Comment ça marche</a>
+                    <button id="hero-register-btn" class="btn btn-accent btn-ripple">Créer mon compte</button>
+                </div>
+                <div class="hero-animation">
+                    <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="50" y="50" width="400" height="200" rx="10" fill="#fff" stroke="#009B3A" stroke-width="2"/>
+                        <rect x="70" y="80" width="360" height="40" rx="5" fill="#f8f9fa"/>
+                        <rect x="70" y="140" width="360" height="90" rx="5" fill="#f8f9fa"/>
+                        <circle cx="90" cy="100" r="10" fill="#009B3A"/>
+                        <rect x="110" y="95" width="200" height="10" rx="5" fill="#e0e0e0"/>
+                        <circle cx="90" cy="160" r="10" fill="#CE1126"/>
+                        <rect x="110" y="155" width="300" height="10" rx="5" fill="#e0e0e0"/>
+                        <rect x="110" y="175" width="250" height="10" rx="5" fill="#e0e0e0"/>
+                        <rect x="110" y="195" width="200" height="10" rx="5" fill="#e0e0e0"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Pourquoi choisir Waz-Moi ?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-secret"></i>
+                        </div>
+                        <h3>Anonymat garanti</h3>
+                        <p>Les messages anonymes sont vraiment anonymes. Nous ne stockons aucune information sur les expéditeurs.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <h3>Partage facile</h3>
+                        <p>Partagez votre lien unique sur les réseaux sociaux ou par message pour recevoir des feedbacks.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Optimisé mobile</h3>
+                        <p>Une expérience fluide sur tous vos appareils, spécialement conçue pour les jeunes Gabonais.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <h2 class="section-title">Comment ça marche ?</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Créez un compte</h3>
+                        <p>Inscrivez-vous en quelques secondes avec votre email et un mot de passe.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Obtenez votre lien</h3>
+                        <p>Votre lien unique est généré automatiquement après inscription.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Partagez et recevez</h3>
+                        <p>Partagez votre lien et recevez des messages anonymes en retour.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact">
+            <div class="container">
+                <h2 class="section-title">Contactez-nous</h2>
+                <div class="contact-form">
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="contact-name">Votre nom</label>
+                            <input type="text" id="contact-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">Votre email</label>
+                            <input type="email" id="contact-email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-message">Votre message</label>
+                            <textarea id="contact-message" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-ripple">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Waz-Moi</h3>
+                    <p>Le réseau social simple et convivial pour les jeunes Gabonais.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Liens utiles</h3>
+                    <ul>
+                        <li><a href="#" id="legal-mentions-link">Mentions légales</a></li>
+                        <li><a href="#" id="privacy-policy-link">Politique de confidentialité</a></li>
+                        <li><a href="#" id="cgu-link">CGU</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Aide</h3>
+                    <ul>
+                        <li><a href="#" id="faq-link">FAQ</a></li>
+                        <li><a href="#" id="contact-footer-link">Contact</a></li>
+                        <li><a href="#" id="forgot-password-link">Mot de passe oublié</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Waz-Moi. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Connexion / Inscription</h2>
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">Connexion</div>
+                <div class="auth-tab" data-tab="register">Inscription</div>
+            </div>
+            
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" class="form-control" required>
+                    <span id="login-email-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Mot de passe</label>
+                    <input type="password" id="login-password" class="form-control" required>
+                    <span id="login-password-error" class="error-message"></span>
+                </div>
+                <div class="forgot-password">
+                    <a href="#" id="show-forgot-password">Mot de passe oublié ?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-ripple" id="login-submit">
+                    <span id="login-text">Se connecter</span>
+                    <span id="login-spinner" class="spinner" style="display: none;"></span>
+                </button>
+                <div id="login-success" class="success-message"></div>
+            </form>
+            
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="register-username">Nom d'utilisateur</label>
+                    <input type="text" id="register-username" class="form-control" required>
+                    <span id="register-username-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" class="form-control" required>
+                    <span id="register-email-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Mot de passe</label>
+                    <input type="password" id="register-password" class="form-control" required>
+                    <span id="register-password-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirmer le mot de passe</label>
+                    <input type="password" id="register-confirm-password" class="form-control" required>
+                    <span id="register-confirm-error" class="error-message"></span>
+                </div>
+                <button type="submit" class="btn btn-primary btn-ripple" id="register-submit">
+                    <span id="register-text">S'inscrire</span>
+                    <span id="register-spinner" class="spinner" style="display: none;"></span>
+                </button>
+                <div id="register-success" class="success-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-password-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Mot de passe oublié</h2>
+            <p>Entrez votre adresse email pour recevoir un lien de réinitialisation :</p>
+            <div class="form-group" style="margin-top: 1.5rem;">
+                <label for="forgot-email">Email</label>
+                <input type="email" id="forgot-email" class="form-control" required>
+                <span id="forgot-email-error" class="error-message"></span>
+            </div>
+            <button id="send-reset-link" class="btn btn-primary btn-ripple">Envoyer le lien</button>
+            <div id="forgot-success" class="success-message" style="margin-top: 1rem;"></div>
+        </div>
+    </div>
+
+    <!-- Dashboard (hidden by default) -->
+    <div id="dashboard" style="display: none;">
+        <div class="dashboard">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Mon Tableau de bord</h1>
+                    <button id="logout-btn" class="btn btn-outline btn-ripple">Déconnexion</button>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="dashboard-card profile-card">
+                        <div class="profile-avatar" id="profile-avatar">JD</div>
+                        <h3 class="profile-name" id="profile-name">lionelmelo</h3>
+                        <p>Votre lien unique :</p>
+                        <div class="profile-link" id="profile-link">waz-moi-jet.vercel.app/@lionelmelo</div>
+                        <div class="copy-link">
+                            <button id="copy-link-btn" class="btn btn-secondary btn-ripple">Copier le lien</button>
+                            <button id="show-qr-btn" class="btn btn-outline btn-ripple">QR Code</button>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <h2>Messages reçus</h2>
+                        <div class="messages-list" id="messages-list">
+                            <div class="message">
+                                <div class="message-date">12/05/2023 14:30</div>
+                                <div class="message-content">bienvenue!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="qr-code-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Partagez votre lien via QR Code</h2>
+            <div class="qr-code-container">
+                <p>Scannez ce QR Code pour accéder directement à votre page de réception de messages :</p>
+                <div class="qr-code" id="qr-code">
+                    <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="200" height="200" fill="white"/>
+                        <rect x="10" y="10" width="30" height="30" fill="black"/>
+                        <rect x="50" y="10" width="20" height="20" fill="black"/>
+                        <rect x="80" y="10" width="10" height="10" fill="black"/>
+                        <!-- Plus de rectangles pour compléter le QR code -->
+                    </svg>
+                </div>
+                <p>Ou partagez directement votre lien :</p>
+                <div class="profile-link" id="qr-profile-link">waz-moi-jet.vercel.app/@lionelmelo</div>
+                <button id="copy-qr-link-btn" class="btn btn-primary btn-ripple" style="margin-top: 1rem;">Copier le lien</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Message Notification -->
+    <div class="new-message-notification" id="new-message-notification">
+        <i class="fas fa-bell"></i> Nouveau message reçu !
+    </div>
+
+    <script>
+        // DOM Elements
+        const authModal = document.getElementById('auth-modal');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const heroRegisterBtn = document.getElementById('hero-register-btn');
+        const closeModal = document.querySelectorAll('.close-modal');
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const authForms = document.querySelectorAll('.auth-form');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const forgotPasswordLink = document.getElementById('show-forgot-password');
+        const forgotPasswordModal = document.getElementById('forgot-password-modal');
+        const sendResetLinkBtn = document.getElementById('send-reset-link');
+        const forgotEmailInput = document.getElementById('forgot-email');
+        const forgotEmailError = document.getElementById('forgot-email-error');
+        const forgotSuccessMsg = document.getElementById('forgot-success');
+        const loginEmailInput = document.getElementById('login-email');
+        const loginPasswordInput = document.getElementById('login-password');
+        const loginEmailError = document.getElementById('login-email-error');
+        const loginPasswordError = document.getElementById('login-password-error');
+        const loginSubmitBtn = document.getElementById('login-submit');
+        const loginText = document.getElementById('login-text');
+        const loginSpinner = document.getElementById('login-spinner');
+        const loginSuccessMsg = document.getElementById('login-success');
+        const registerUsernameInput = document.getElementById('register-username');
+        const registerEmailInput = document.getElementById('register-email');
+        const registerPasswordInput = document.getElementById('register-password');
+        const registerConfirmInput = document.getElementById('register-confirm-password');
+        const registerUsernameError = document.getElementById('register-username-error');
+        const registerEmailError = document.getElementById('register-email-error');
+        const registerPasswordError = document.getElementById('register-password-error');
+        const registerConfirmError = document.getElementById('register-confirm-error');
+        const registerSubmitBtn = document.getElementById('register-submit');
+        const registerText = document.getElementById('register-text');
+        const registerSpinner = document.getElementById('register-spinner');
+        const registerSuccessMsg = document.getElementById('register-success');
+        const dashboard = document.getElementById('dashboard');
+        const logoutBtn = document.getElementById('logout-btn');
+        const copyLinkBtn = document.getElementById('copy-link-btn');
+        const showQrBtn = document.getElementById('show-qr-btn');
+        const qrCodeModal = document.getElementById('qr-code-modal');
+        const copyQrLinkBtn = document.getElementById('copy-qr-link-btn');
+        const newMessageNotification = document.getElementById('new-message-notification');
+        const contactForm = document.getElementById('contact-form');
+        const contactFooterLink = document.getElementById('contact-footer-link');
+
+        // Create flag particles
+        const flagBg = document.getElementById('flagBackground');
+        const colors = ['#009B3A', '#FCD116', '#6C5CE7'];
+        
+        for (let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'flag-particle';
+            particle.style.background = colors[i % 3];
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            particle.style.width = `${20 + Math.random() * 30}px`;
+            particle.style.height = `${10 + Math.random() * 20}px`;
+            particle.style.animationDelay = `${Math.random() * 3}s`;
+            particle.style.borderRadius = '4px';
+            flagBg.appendChild(particle);
+        }
+
+        // Check if user is logged in
+        function checkAuth() {
+            fetch('/api/check-auth')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.authenticated) {
+                        showDashboard(data.user);
+                    }
+                })
+                .catch(error => console.error('Error checking auth:', error));
+        }
+
+        // Show dashboard
+        function showDashboard(user) {
+            document.querySelector('main').style.display = 'none';
+            document.querySelector('footer').style.display = 'none';
+            dashboard.style.display = 'block';
+            document.querySelector('header').style.display = 'none';
+            
+            document.getElementById('profile-name').textContent = user.username;
+            document.getElementById('profile-avatar').textContent = user.username.substring(0, 2).toUpperCase();
+            document.getElementById('profile-avatar').style.backgroundColor = user.avatarColor;
+            const profileLink = `waz-moi-jet.vercel.app/@${user.profile_link}`;
+            document.getElementById('profile-link').textContent = profileLink;
+            document.getElementById('qr-profile-link').textContent = profileLink;
+            
+            loadMessages(user.profile_link);
+        }
+
+        // Load messages
+        function loadMessages(profileLink) {
+            fetch(`/api/messages/${profileLink}`)
+                .then(response => response.json())
+                .then(data => {
+                    const messagesList = document.getElementById('messages-list');
+                    messagesList.innerHTML = '';
+                    
+                    if (data.messages && data.messages.length > 0) {
+                        data.messages.forEach(msg => {
+                            const messageElement = document.createElement('div');
+                            messageElement.className = 'message';
+                            
+                            let senderInfo = '';
+                            if (msg.isAnonymous) {
+                                senderInfo = '<span class="anonymous-badge">Anonyme</span>';
+                            } else if (msg.sender) {
+                                senderInfo = `De: <span style="color: ${msg.sender.avatarColor}">${msg.sender.username}</span>`;
+                            }
+                            
+                            messageElement.innerHTML = `
+                                <div class="message-content">${msg.content}</div>
+                                <div class="message-meta">
+                                    ${senderInfo}
+                                    <span class="message-date">${msg.date}</span>
+                                </div>
+                            `;
+                            
+                            messagesList.appendChild(messageElement);
+                        });
+                    } else {
+                        messagesList.innerHTML = '<div class="no-messages">Aucun message pour le moment</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading messages:', error);
+                    document.getElementById('messages-list').innerHTML = '<div class="no-messages">Erreur de chargement des messages</div>';
+                });
+        }
+
+        // Auth Modal Toggle
+        function toggleAuthModal() {
+            authModal.style.display = authModal.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Show Register Form
+        function showRegisterForm() {
+            toggleAuthModal();
+            authTabs[1].click();
+        }
+
+        // Event Listeners
+        loginBtn.addEventListener('click', toggleAuthModal);
+        registerBtn.addEventListener('click', showRegisterForm);
+        heroRegisterBtn.addEventListener('click', showRegisterForm);
+
+        closeModal.forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // Auth Tabs
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                
+                authTabs.forEach(t => t.classList.remove('active'));
+                authForms.forEach(f => f.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById(`${tabName}-form`).classList.add('active');
+            });
+        });
+
+        // Form Validation
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function validatePassword(password) {
+            return password.length >= 6;
+        }
+
+        function validateUsername(username) {
+            return username.length >= 3;
+        }
+
+        // Forgot Password
+        forgotPasswordLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            authModal.style.display = 'none';
+            forgotPasswordModal.style.display = 'block';
+        });
+
+        sendResetLinkBtn.addEventListener('click', function() {
+            const email = forgotEmailInput.value.trim();
+            
+            // Reset errors
+            forgotEmailError.textContent = '';
+            
+            // Validate
+            if (!email) {
+                forgotEmailError.textContent = 'Veuillez entrer votre email';
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                forgotEmailError.textContent = 'Veuillez entrer un email valide';
+                return;
+            }
+            
+            // Send reset link
+            fetch('/api/forgot-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    forgotSuccessMsg.textContent = 'Un lien de réinitialisation a été envoyé à votre adresse email.';
+                    setTimeout(() => {
+                        forgotPasswordModal.style.display = 'none';
+                        forgotSuccessMsg.textContent = '';
+                        forgotEmailInput.value = '';
+                    }, 3000);
+                } else {
+                    forgotEmailError.textContent = data.error || 'Une erreur est survenue';
+                }
+            })
+            .catch(error => {
+                forgotEmailError.textContent = 'Erreur de connexion au serveur';
+            });
+        });
+
+        // Login Form
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = loginEmailInput.value.trim();
+            const password = loginPasswordInput.value;
+            
+            // Reset errors and messages
+            loginEmailError.textContent = '';
+            loginPasswordError.textContent = '';
+            loginSuccessMsg.textContent = '';
+            
+            // Validate
+            if (!email) {
+                loginEmailError.textContent = 'Veuillez entrer votre email';
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                loginEmailError.textContent = 'Veuillez entrer un email valide';
+                return;
+            }
+            
+            if (!password) {
+                loginPasswordError.textContent = 'Veuillez entrer votre mot de passe';
+                return;
+            }
+            
+            // Show loading state
+            loginText.style.display = 'none';
+            loginSpinner.style.display = 'inline-block';
+            
+            // Send login request
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showDashboard(data.user);
+                } else {
+                    loginPasswordError.textContent = data.error || 'Identifiants incorrects';
+                }
+            })
+            .catch(error => {
+                loginPasswordError.textContent = 'Erreur de connexion au serveur';
+            })
+            .finally(() => {
+                loginText.style.display = 'inline';
+                loginSpinner.style.display = 'none';
+            });
+        });
+
+        // Register Form
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = registerUsernameInput.value.trim();
+            const email = registerEmailInput.value.trim();
+            const password = registerPasswordInput.value;
+            const confirmPassword = registerConfirmInput.value;
+            
+            // Reset errors and messages
+            registerUsernameError.textContent = '';
+            registerEmailError.textContent = '';
+            registerPasswordError.textContent = '';
+            registerConfirmError.textContent = '';
+            registerSuccessMsg.textContent = '';
+            
+            // Validate
+            if (!username) {
+                registerUsernameError.textContent = 'Veuillez entrer un nom d\'utilisateur';
+                return;
+            }
+            
+            if (!validateUsername(username)) {
+                registerUsernameError.textContent = 'Le nom d\'utilisateur doit contenir au moins 3 caractères';
+                return;
+            }
+            
+            if (!email) {
+                registerEmailError.textContent = 'Veuillez entrer votre email';
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                registerEmailError.textContent = 'Veuillez entrer un email valide';
+                return;
+            }
+            
+            if (!password) {
+                registerPasswordError.textContent = 'Veuillez entrer un mot de passe';
+                return;
+            }
+            
+            if (!validatePassword(password)) {
+                registerPasswordError.textContent = 'Le mot de passe doit contenir au moins 6 caractères';
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                registerConfirmError.textContent = 'Les mots de passe ne correspondent pas';
+                return;
+            }
+            
+            // Show loading state
+            registerText.style.display = 'none';
+            registerSpinner.style.display = 'inline-block';
+            
+            // Send registration request
+            fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showDashboard(data.user);
+                } else {
+                    registerEmailError.textContent = data.error || 'Erreur lors de l\'inscription';
+                }
+            })
+            .catch(error => {
+                registerEmailError.textContent = 'Erreur de connexion au serveur';
+            })
+            .finally(() => {
+                registerText.style.display = 'inline';
+                registerSpinner.style.display = 'none';
+            });
+        });
+
+        // Contact Form
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const message = document.getElementById('contact-message').value;
+            
+            fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Merci pour votre message ! Nous vous répondrons dès que possible.');
+                    this.reset();
+                } else {
+                    alert('Erreur lors de l\'envoi du message. Veuillez réessayer.');
+                }
+            })
+            .catch(error => {
+                alert('Erreur de connexion au serveur');
+            });
+        });
+
+        contactFooterLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: document.querySelector('.contact').offsetTop - 80,
+                behavior: 'smooth'
+            });
+        });
+
+        // Dashboard Functions
+        logoutBtn.addEventListener('click', function() {
+            fetch('/api/logout', {
+                method: 'POST'
+            })
+            .then(() => {
+                location.reload();
+            });
+        });
+
+        copyLinkBtn.addEventListener('click', function() {
+            const link = document.getElementById('profile-link').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                const originalText = this.textContent;
+                this.textContent = 'Lien copié !';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 2000);
+            });
+        });
+
+        showQrBtn.addEventListener('click', function() {
+            qrCodeModal.style.display = 'block';
+        });
+
+        copyQrLinkBtn.addEventListener('click', function() {
+            const link = document.getElementById('qr-profile-link').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                const originalText = this.textContent;
+                this.textContent = 'Lien copié !';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 2000);
+            });
+        });
+
+        // Check auth status on page load
+        checkAuth();
+
+        // Initialize animations
+        window.addEventListener('load', function() {
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('.btn-ripple');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const x = e.clientX - e.target.getBoundingClientRect().left;
+                    const y = e.clientY - e.target.getBoundingClientRect().top;
+                    
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple-effect';
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 1000);
+                });
+            });
+
+            // Animate elements on scroll
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.feature-card, .step, .contact-form');
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.2;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', animateOnScroll);
+            animateOnScroll(); // Run once on load
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Simulate receiving a new message (for demo)
+        if (document.getElementById('dashboard').style.display === 'block') {
+            setTimeout(() => {
+                newMessageNotification.style.display = 'flex';
+                setTimeout(() => {
+                    newMessageNotification.style.display = 'none';
+                }, 5000);
+            }, 8000);
+        }
+
+        newMessageNotification.addEventListener('click', function() {
+            this.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
